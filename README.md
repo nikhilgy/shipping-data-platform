@@ -2,97 +2,53 @@
 
 ## Overview
 
-This is your new Kedro project with Kedro-Viz and PySpark setup, which was generated using `kedro 0.19.7`.
+This repo is for processing shipping and logistical data, ranging from a database BigQuery data mart tables. The objective is to clean, organize, and transform this data to provide valuable insights. We will implement Kedro pipelines for data ingestion and processing, and dbt for data transformation and standardization.
 
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
-## Rules and guidelines
+### Tech Stack
 
-In order to get the best out of the template:
+- Python 3.11
+- Kedro
+- PostgreSQL
+- BigQuery
+- Airflow
 
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a [data engineering convention](https://docs.kedro.org/en/stable/faq/faq.html#what-is-data-engineering-convention)
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+### Overview of ETL pipeline
+![shipping-data-platform (1)](https://github.com/user-attachments/assets/e6ccaec2-02dc-459f-8b2c-a69b2076edc3)
 
-## How to install dependencies
+### Overview of Data Flow
+![Data Flow](https://github.com/user-attachments/assets/db58efd2-c672-40fb-9c45-6e54122f2744)
 
-Declare any dependencies in `requirements.txt` for `pip` installation.
+## How to setup development environment
 
-To install them, run:
+Clone the repo
 
+```
+git clone https://github.com/nikhilgy/shipping-data-platform.git
+```
+
+Activate virtual environment
+```
+python -m venv venv
+source venv/Scripts/activate
+```
+
+Install dependencies mentioned in `requirements.txt`. To install them, run:
 ```
 pip install -r requirements.txt
 ```
 
+Setup database connection and add credentials
+
+1. For Kedro project, create credentials.yml in `\conf\base\` for PostgreSQL source connection and BigQuery target connection
+
 ## How to run your Kedro pipeline
 
-You can run your Kedro project with:
+This project has 1 pipelines stage:
 
-```
-kedro run
-```
-
-## How to test your Kedro project
-
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-pytest
-```
-
-To configure the coverage threshold, look at the `.coveragerc` file.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. Install the project requirements with `pip install -r requirements.txt`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
-
-## How to work with Kedro and notebooks
-
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `catalog`, `context`, `pipelines` and `session`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
-
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-
-```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
-
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
-
-```
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
-
-```
-kedro jupyter lab
-```
-
-### IPython
-And if you want to run an IPython session:
-
-```
-kedro ipython
-```
-
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
-
-> *Note:* Your output cells will be retained locally.
-
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)
+1. **data_extracting_and_cleaning** : Here we're identifying data issues such as duplicates, noise in values, wrong formats, fixing them and loading into raw database for 2 datasets: `Containers, Operations` . To run data cleaning, 
+    
+    ```
+    kedro run --pipeline data_extracting_and_cleaning
+    ```

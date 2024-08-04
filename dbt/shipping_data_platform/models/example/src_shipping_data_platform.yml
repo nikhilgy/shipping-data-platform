@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: shipping_data_platform
+    database: staging_data  
+    schema: raw_data
+    tables:
+      - name: containers
+      - name: operations

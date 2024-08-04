@@ -15,3 +15,5 @@ psycopg2
 pyspark
 black
 isort
+dbt-core
+dbt-postgres

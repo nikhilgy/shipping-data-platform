@@ -1,0 +1,94 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+
+############ Raw SQL Tables ################
+
+containers:
+  type: pandas.SQLTableDataset
+  table_name: containers
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+operations:
+  type: pandas.SQLTableDataset
+  table_name: operations
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+companies:
+  type: pandas.SQLTableDataset
+  table_name: companies
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+operation_qualities:
+  type: pandas.SQLTableDataset
+  table_name: operation_qualities
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+containers_to_operation_qualities:
+  type: pandas.SQLTableDataset
+  table_name: containers_to_operation_qualities
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+qualities:
+  type: pandas.SQLTableDataset
+  table_name: qualities
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+shipments:
+  type: pandas.SQLTableDataset
+  table_name: shipments
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+bookings:
+  type: pandas.SQLTableDataset
+  table_name: bookings
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+vessels:
+  type: pandas.SQLTableDataset
+  table_name: vessels
+  credentials: source
+  load_args:
+    schema: sandbox_lotr_extr_2
+
+
+containers_raw:
+  type: pandas.SQLTableDataset
+  credentials: target
+  table_name: containers
+  save_args:
+    schema: raw_data
+    if_exists: replace
+
+operations_raw:
+  type: pandas.SQLTableDataset
+  credentials: target
+  table_name: operations
+  save_args:
+    schema: raw_data
+    if_exists: replace

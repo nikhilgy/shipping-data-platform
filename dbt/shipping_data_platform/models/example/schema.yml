@@ -1,0 +1,693 @@
+version: 2
+
+models:
+  - name: containers
+    description: "Table to store container details"
+    columns:
+      - name: id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: createdById
+        description: "ID of the user who created the container"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('users')
+              field: id
+      - name: buyOperationId
+        description: "ID of the buy operation"
+        tests:
+          - relationships:
+              to: ref('operations')
+              field: id
+      - name: loadingTime
+        description: "Loading time"
+      - name: endTime
+        description: "End time"
+      - name: dateOfLoading
+        description: "Date of loading"
+      - name: status
+        description: "Status of the container"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['ALLOCATED', 'CLOSED', 'CONFIRMED', 'CANCELLED']
+      - name: created_at
+        description: "Timestamp when the container was created"
+        tests:
+          - not_null
+      - name: updated_at
+        description: "Timestamp when the container was last updated"
+        tests:
+          - not_null
+      - name: allocationId
+        description: "ID of the allocation"
+        tests:
+          - relationships:
+              to: ref('allocations')
+              field: id
+      - name: referenceNumber
+        description: "Reference number"
+      - name: sealedNumber
+        description: "Sealed number"
+      - name: grossWeight
+        description: "Gross weight"
+      - name: tareWeight
+        description: "Tare weight"
+      - name: sellOperationId
+        description: "ID of the sell operation"
+        tests:
+          - relationships:
+              to: ref('operations')
+              field: id
+      - name: bookingId
+        description: "ID of the booking"
+        tests:
+          - relationships:
+              to: ref('bookings')
+              field: id
+      - name: photos
+        description: "Photos"
+      - name: maximumGrossWeight
+        description: "Maximum gross weight"
+      - name: netWeight
+        description: "Net weight"
+      - name: weightSlip
+        description: "Weight slip"
+      - name: erpId
+        description: "ERP ID"
+      - name: dateOfSynchronizationToErp
+        description: "Date of synchronization to ERP"
+      - name: erpRecId
+        description: "ERP record ID"
+      - name: erpSubRecId
+        description: "ERP sub-record ID"
+      - name: eta
+        description: "Estimated time of arrival"
+      - name: quantity
+        description: "Quantity"
+      - name: quantityUnit
+        description: "Unit of quantity"
+        tests:
+          - relationships:
+              to: ref('conditionning')
+              field: value
+      - name: isCancelled
+        description: "Whether the container is cancelled"
+      - name: preCarriageLine
+        description: "Pre-carriage line"
+        tests:
+          - relationships:
+              to: ref('pre_carriage_lines')
+              field: value
+      - name: shippingLine
+        description: "Shipping line"
+        tests:
+          - relationships:
+              to: ref('shipping_lines')
+              field: value
+      - name: estimatedLogisticCostQuantity
+        description: "Estimated logistic cost quantity"
+      - name: estimatedLogisticCostVolume
+        description: "Estimated logistic cost volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: estimatedLogisticCostCurrency
+        description: "Estimated logistic cost currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: locationStatus
+        description: "Location status"
+      - name: etaStatus
+        description: "ETA status"
+      - name: currentEta
+        description: "Current ETA"
+      - name: originalEta
+        description: "Original ETA"
+      - name: expectedTransitDays
+        description: "Expected transit days"
+      - name: currentTransitDays
+        description: "Current transit days"
+      - name: dateOfDelivery
+        description: "Date of delivery"
+      - name: trackingEvent
+        description: "Tracking event"
+      - name: actualSailingDate
+        description: "Actual sailing date"
+      - name: estimatedSailingDate
+        description: "Estimated sailing date"
+      - name: loadingOtherNumber
+        description: "Loading other number"
+      - name: deliverySlipNumber
+        description: "Delivery slip number"
+      - name: loadingComment
+        description: "Loading comment"
+      - name: loadedOnVessel
+        description: "Loaded on vessel"
+      - name: etaPodFinal
+        description: "Final estimated time of arrival at pod"
+      - name: actualArrivalPod
+        description: "Actual arrival at pod"
+      - name: finalEta
+        description: "Final ETA"
+      - name: reachedDestinationAt
+        description: "Reached destination at"
+      - name: podDepartureTime
+        description: "POD departure time"
+      - name: emptyContainerTime
+        description: "Empty container time"
+      - name: deliveryTime
+        description: "Delivery time"
+      - name: deliveryComment
+        description: "Delivery comment"
+      - name: mode
+        description: "Mode of transportation"
+        tests:
+          - accepted_values:
+              values: ['TRUCK', 'BARGE', 'RAIL', 'ROAD']
+      - name: deliveryDateComment
+        description: "Delivery date comment"
+      - name: loadingDateComment
+        description: "Loading date comment"
+      - name: blNumber
+        description: "BL number"
+      - name: finalMarginQuantity
+        description: "Final margin quantity"
+      - name: finalMarginCurrency
+        description: "Final margin currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: finalMarginVolume
+        description: "Final margin volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: estimatedMarginQuantity
+        description: "Estimated margin quantity"
+      - name: estimatedMarginCurrency
+        description: "Estimated margin currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: estimatedMarginVolume
+        description: "Estimated margin volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: generalComment
+        description: "General comment"
+      - name: logisticMaterial
+        description: "Logistic material"
+        tests:
+          - relationships:
+              to: ref('logistic_materials')
+              field: value
+      - name: totalFinalMarginQuantity
+        description: "Total final margin quantity"
+      - name: totalEstimatedMarginQuantity
+        description: "Total estimated margin quantity"
+      - name: totalDeliveredTons
+        description: "Total delivered tons"
+      - name: flagId
+        description: "Flag ID"
+        tests:
+          - relationships:
+              to: ref('flags')
+              field: id
+      - name: trackingApiUpdatedAt
+        description: "Tracking API updated at"
+      - name: trackingManualUpdatedAt
+        description: "Tracking manual updated at"
+      - name: shipmentComment
+        description: "Shipment comment"
+      - name: manualTrackingEvent
+        description: "Manual tracking event"
+      - name: manualTimingStatus
+        description: "Manual timing status"
+      - name: manualEmptyContainerTime
+        description: "Manual empty container time"
+      - name: manualLocationStatus
+        description: "Manual location status"
+      - name: manualCurrentEta
+        description: "Manual current ETA"
+      - name: manualActualSailingDate
+        description: "Manual actual sailing date"
+      - name: manualActualArrivalPod
+        description: "Manual actual arrival at pod"
+      - name: deliveryOtherNumber
+        description: "Delivery other number"
+      - name: shipmentId
+        description: "Shipment ID"
+        tests:
+          - relationships:
+              to: ref('shipments')
+              field: id
+      - name: isPurchaseInvoicingClosed
+        description: "Whether purchase invoicing is closed"
+      - name: isSaleInvoicingClosed
+        description: "Whether sale invoicing is closed"
+      - name: pcBookingId
+        description: "PC booking ID"
+        tests:
+          - relationships:
+              to: ref('pc_bookings')
+              field: id
+      - name: tractorNumber
+        description: "Tractor number"
+      - name: estimatedFreightCostQuantity
+        description: "Estimated freight cost quantity"
+      - name: estimatedFreightCostVolume
+        description: "Estimated freight cost volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: estimatedFreightCostCurrency
+        description: "Estimated freight cost currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: estimatedPreCarriageCostQuantity
+        description: "Estimated pre-carriage cost quantity"
+      - name: estimatedPreCarriageCostVolume
+        description: "Estimated pre-carriage cost volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: estimatedPreCarriageCostCurrency
+        description: "Estimated pre-carriage cost currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: estimatedPortOfDestination
+        description: "Estimated port of destination"
+      - name: estimatedPortOfLoading
+        description: "Estimated port of loading"
+      - name: stepperValue
+        description: "Stepper value"
+      - name: logisticForwarder
+        description: "Logistic forwarder"
+      - name: erpStatus
+        description: "ERP status"
+      - name: isPlannedLoading
+        description: "Whether loading is planned"
+      - name: isPlannedDelivery
+        description: "Whether delivery is planned"
+      - name: isPurchaseInvoicingReopened
+        description: "Whether purchase invoicing is reopened"
+      - name: isSaleInvoicingReopened
+        description: "Whether sale invoicing is reopened"
+      - name: harold_number
+        description: "Harold number"
+      - name: loadingInspector
+        description: "Loading inspector"
+      - name: loadingInspectionDate
+        description: "Loading inspection date"
+      - name: loadingInspectionCostQuantity
+        description: "Loading inspection cost quantity"
+      - name: loadingInspectionCostCurrency
+        description: "Loading inspection cost currency"
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: loadingInspectionCostVolume
+        description: "Loading inspection cost volume"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: loadingType
+        description: "Loading type"
+      - name: weightUnit
+        description: "Weight unit"
+      - name: gatedInDate
+        description: "Gated in date"
+      - name: stepperValues
+        description: "Stepper values"
+      - name: deliveryTareWeightQuantity
+        description: "Delivery tare weight quantity"
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: utilizationRate
+        description: utilization rate of containers based on their loading and delivery times
+      - name: weightUtilization
+        description: utilization rate of containers based on their weight capacities
+      - name: loadingTimeTaken
+        description: Loading time for every container while loading
+      - name: unloadingTimeTaken
+        description: Unloading time for every container while loading
+      - name: transitTimeTaken
+        description: Loading time for every container while loading
+      - name: delayTime
+        description: Actual delay between estimated time and date of delivery 
+      - name: turnAroundTime
+        description: Time taken for a container to complete a full cycle (from loading to return)
+
+
+
+  - name: operations
+    description: "Table containing details about various operations."
+    columns:
+      - name: id
+        description: "Unique identifier for the operation."
+        tests:
+          - unique
+          - not_null
+      - name: agent
+        description: "Agent responsible for the operation."
+      - name: agentCommissionQuantity
+        description: "Quantity for the agent's commission."
+      - name: agentCommissionCurrency
+        description: "Currency for the agent's commission."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: agentCommissionVolume
+        description: "Volume for the agent's commission."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: conditionning
+        description: "Conditionning of the operation."
+        tests:
+          - relationships:
+              to: ref('conditionning')
+              field: value
+      - name: createdById
+        description: "ID of the user who created the operation."
+        tests:
+          - relationships:
+              to: ref('users')
+              field: id
+      - name: dateOfConfirmation
+        description: "Date when the operation was confirmed."
+      - name: goalId
+        description: "ID of the associated goal."
+        tests:
+          - relationships:
+              to: ref('goals')
+              field: id
+      - name: incoterm
+        description: "Incoterm used for the operation."
+        tests:
+          - accepted_values:
+              values: ['CIF', 'CFR', 'CIP', 'CPT', 'DAP', 'DAT', 'DDP', 'EXW', 'FAS', 'FCA', 'FOB', 'FRC']
+      - name: mqc
+        description: "MQC value for the operation."
+      - name: portOfDestination
+        description: "Port where the shipment is to be delivered."
+        tests:
+          - relationships:
+              to: ref('ports_of_destination')
+              field: value
+      - name: portOfLoading
+        description: "Port from where the shipment is to be loaded."
+        tests:
+          - relationships:
+              to: ref('ports_of_loading')
+              field: value
+      - name: origin
+        description: "Origin of the shipment."
+        tests:
+          - relationships:
+              to: ref('regions')
+              field: value
+      - name: paymentTerms
+        description: "Terms of payment for the operation."
+        tests:
+          - relationships:
+              to: ref('payment_terms')
+              field: value
+      - name: isPaymentReceived
+        description: "Whether the payment has been received."
+      - name: priceQuantity
+        description: "Quantity of the price for the operation."
+      - name: priceCurrency
+        description: "Currency of the price."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: priceVolume
+        description: "Volume of the price."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: qualityId
+        description: "ID of the associated quality."
+        tests:
+          - relationships:
+              to: ref('qualities')
+              field: id
+      - name: priceCostCurrency
+        description: "Currency of the price cost."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: priceCostQuantity
+        description: "Quantity of the price cost."
+      - name: priceCostVolume
+        description: "Volume of the price cost."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: quantity
+        description: "Quantity related to the operation."
+      - name: quantityVolume
+        description: "Volume of the quantity."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: siteId
+        description: "ID of the site associated with the operation."
+        tests:
+          - relationships:
+              to: ref('sites')
+              field: id
+      - name: status
+        description: "Current status of the operation."
+        tests:
+          - accepted_values:
+              values: ['IN_PROGRESS', 'CONFIRMED', 'CLOSED', 'NEW', 'CANCELLED']
+      - name: type
+        description: "Type of the operation."
+        tests:
+          - accepted_values:
+              values: ['BUY', 'SELL']
+      - name: parentOperationId
+        description: "ID of the parent operation, if applicable."
+        tests:
+          - relationships:
+              to: ref('operations')
+              field: id
+      - name: created_at
+        description: "Timestamp when the operation was created."
+        tests:
+          - not_null
+      - name: updated_at
+        description: "Timestamp when the operation was last updated."
+        tests:
+          - not_null
+      - name: referenceNumber
+        description: "Reference number for the operation."
+      - name: comment
+        description: "Additional comments related to the operation."
+      - name: cancellationReason
+        description: "Reason for the cancellation, if applicable."
+        tests:
+          - accepted_values:
+              values: ['DOCUMENTATION_LICENSE_PROBLEM', 'OPERATIONAL_PROBLEMS_DELAYS', 'OTHER', 'OVER_COMPETITIVE_QUOTE', 'PAYMENT_DUE']
+      - name: limitPriceQuantity
+        description: "Quantity for the limit price."
+      - name: limitPriceCurrency
+        description: "Currency for the limit price."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: limitPriceVolume
+        description: "Volume for the limit price."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: dateOfCreation
+        description: "Date when the operation was created."
+      - name: dateOfSynchronizationToErp
+        description: "Date when the operation was synchronized to ERP."
+      - name: marginQuantity
+        description: "Quantity of the margin."
+      - name: marginCurrency
+        description: "Currency of the margin."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: marginVolume
+        description: "Volume of the margin."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: targetCostQuantity
+        description: "Quantity for the target cost."
+      - name: targetCostCurrency
+        description: "Currency for the target cost."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: targetCostVolume
+        description: "Volume for the target cost."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: destinationId
+        description: "ID of the destination associated with the operation."
+        tests:
+          - relationships:
+              to: ref('sites')
+              field: id
+      - name: endDate
+        description: "End date of the operation."
+      - name: poStatus
+        description: "Purchase order status."
+        tests:
+          - accepted_values:
+              values: ['PENDING', 'CREATED', 'SENT', 'SIGNED_AND_UPLOADED']
+      - name: invoiceStatus
+        description: "Invoice status."
+        tests:
+          - accepted_values:
+              values: ['PENDING', 'CREATED', 'SENT']
+      - name: billingEntity
+        description: "Billing entity responsible for the operation."
+        tests:
+          - relationships:
+              to: ref('billing_entities')
+              field: value
+      - name: division
+        description: "Division associated with the operation."
+        tests:
+          - relationships:
+              to: ref('erp_divisions')
+              field: value
+      - name: subdivision
+        description: "Subdivision associated with the operation."
+        tests:
+          - relationships:
+              to: ref('erp_subdivisions')
+              field: value
+      - name: erpId
+        description: "ERP identifier for the operation."
+      - name: flagId
+        description: "ID of the associated flag."
+        tests:
+          - relationships:
+              to: ref('flags')
+              field: id
+      - name: assignedToId
+        description: "ID of the user assigned to the operation."
+        tests:
+          - relationships:
+              to: ref('users')
+              field: id
+      - name: marketType
+        description: "Market type for the operation."
+        tests:
+          - accepted_values:
+              values: ['LOCAL', 'EXPORT']
+      - name: contractId
+        description: "ID of the associated contract."
+        tests:
+          - relationships:
+              to: ref('contracts')
+              field: id
+      - name: companyId
+        description: "ID of the associated company."
+        tests:
+          - relationships:
+              to: ref('companies')
+              field: id
+      - name: logisticMaterial
+        description: "Material used for logistics."
+        tests:
+          - relationships:
+              to: ref('logistic_materials')
+              field: value
+      - name: estimatedLogisticCostQuantity
+        description: "Estimated logistic cost quantity."
+      - name: estimatedLogisticCostVolume
+        description: "Estimated logistic cost volume."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: estimatedLogisticCostCurrency
+        description: "Estimated logistic cost currency."
+        tests:
+          - relationships:
+              to: ref('currencies')
+              field: value
+      - name: plannedShipmentDate
+        description: "Planned date for shipment."
+      - name: estimatedArrivalDate
+        description: "Estimated arrival date for the shipment."
+      - name: actualArrivalDate
+        description: "Actual arrival date of the shipment."
+      - name: actualShipmentDate
+        description: "Actual shipment date."
+      - name: orderedQuantity
+        description: "Quantity of items ordered."
+      - name: orderedVolume
+        description: "Volume of items ordered."
+        tests:
+          - relationships:
+              to: ref('quantity_units')
+              field: code
+      - name: packagingType
+        description: "Type of packaging used."
+        tests:
+          - relationships:
+              to: ref('packaging_types')
+              field: value
+      - name: deliveryType
+        description: "Type of delivery for the operation."
+        tests:
+          - relationships:
+              to: ref('delivery_types')
+              field: value
+      - name: priceUtilization
+        description: Ratio of price to the limit price
+      - name: costEfficiency
+        description: Estimated logic cost to actual costs 
+      - name: processingTime
+        description: The time taken from creation to confirmation
+      - name: deliveryTime
+        description: Time between date of creation and date of reception 
+      - name: margin
+        description: Margin based on quantity and volume

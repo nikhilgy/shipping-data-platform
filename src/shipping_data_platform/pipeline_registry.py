@@ -4,6 +4,7 @@ from typing import Dict
 from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
 
+from shipping_data_platform.pipelines.data_extracting_and_cleaning import create_pipeline as data_extracting_and_cleaning
 
 def register_pipelines() -> Dict[str, Pipeline]:
     """Register the project's pipelines.
@@ -11,6 +12,8 @@ def register_pipelines() -> Dict[str, Pipeline]:
     Returns:
         A mapping from pipeline names to ``Pipeline`` objects.
     """
-    pipelines = find_pipelines()
-    pipelines["__default__"] = sum(pipelines.values())
-    return pipelines
+    
+    return {
+        "__default__": data_extracting_and_cleaning(),
+        "data_extracting_and_cleaning": data_extracting_and_cleaning()
+    }
